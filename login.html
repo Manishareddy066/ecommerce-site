@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Login form</title>
+<style>
+    body {
+        background-image: linear-gradient(to right, #ffbb33, #ff6f91); /* Adjust the background color as needed */
+    }
+    .form-container {
+        max-width: 400px;
+        margin: 50px auto;
+        background-color: #ffffff; /* Background color for the form container */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+    }
+    .form-container input[type="text"],
+    .form-container input[type="password"],
+    .form-container input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .form-container input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="form-container">
+    <form id="user-form" action="./LoginServlet" method="post">
+        <label for="user">Username:</label>
+        <input type="text" name="user" id="user">
+        <label for="pwd">Password:</label>
+        <input type="password" name="pwd" id="pwd">
+        <input type="submit" value="Login">
+    </form>
+    <div id="msg"></div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#user-form").submit(function(event){
+        event.preventDefault();
+        var uname = $("#user").val();
+        var pass = $("#pwd").val();
+        $.ajax({
+            type:"POST",
+            url:"LoginServlet",
+            data:$(this).serialize(),
+            success:function(res){
+                if(res.trim()==='success'){
+                    console.log(res);
+                    window.location.href="index.jsp";
+                  } else {
+                	$("#msg").text("Invalid credentials..Please register").show(); 
+                  
+                }
+            },
+            error:function(){
+                console.error("Login request failed");
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
